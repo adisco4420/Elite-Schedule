@@ -13,8 +13,10 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'standings.html',
 })
 export class StandingsPage {
+  public team: any ={}
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.team = this.navParams.data;
   }
 
   ionViewDidLoad() {

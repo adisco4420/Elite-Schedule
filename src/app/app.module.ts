@@ -13,6 +13,7 @@ import { StandingsPage } from './../pages/standings/standings';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { NamedProvider } from '../providers/named/named';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    NamedProvider
   ]
 })
 export class AppModule {}
