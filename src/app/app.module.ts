@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from '@angular/http'
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
@@ -14,6 +15,7 @@ import { StandingsPage } from './../pages/standings/standings';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { NamedProvider } from '../providers/named/named';
+import { EliteApi } from '../providers/elite-api/elite-api';
 
 
 @NgModule({
@@ -29,6 +31,7 @@ import { NamedProvider } from '../providers/named/named';
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],
@@ -46,7 +49,8 @@ import { NamedProvider } from '../providers/named/named';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    NamedProvider
+    NamedProvider,
+    EliteApi
   ]
 })
 export class AppModule {}
