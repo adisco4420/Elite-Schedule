@@ -4,6 +4,8 @@ import { EliteApi } from '../../providers/elite-api/elite-api';
 import moment from 'moment';
 import * as _ from 'lodash';
 import { GamePage } from '../game/game';
+import { AlertController } from 'ionic-angular/components/alert/alert-controller';
+import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 
 @Component({
   selector: 'page-team-detail',
@@ -16,11 +18,15 @@ export class TeamDetailPage {
   public games: any[]
   public teamStanding: any = {}
   private tourneyData: any
+  public useDateFilter = false
+  public isFollowing
 
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    private eliteApi: EliteApi) {
+    private eliteApi: EliteApi,
+    private alertController:AlertController,
+    private toastController: ToastController) {
     
   }
 
@@ -48,11 +54,16 @@ export class TeamDetailPage {
     this.teamStanding = _.find(this.tourneyData.standings, {'teamId': this.team.id})
   }
   dateChanged(){
-    this.games = _.filter(this.allGames, g => moment(g.time).isSame(this.dateFilter, 'day'))
-  }
+    if(this.useDateFilter){
+      this.games = _.filter(this.allGames, g => moment(g.time).isSame(this.dateFilter, 'day'))
+    }else{
+      this.games = this.allGames
+
+    }
+     }
   getScoreDisplay(isTeam1,team1Score,team2Score){
     if(team1Score && team2Score){
-      var teamScore = (isTeam1 ? team2Score : team1Score)
+      var teamScore = (isTeam1 ? team1Score : team2Score)
       var opponentScore = (isTeam1 ? team2Score : team1Score)
       var winIndicator = teamScore > opponentScore ? "W: " : "L: "
       return winIndicator + teamScore + "-" + opponentScore
@@ -61,10 +72,43 @@ export class TeamDetailPage {
       return ""
     }
   }
+  getScrDspBadgClas(game){
+    return game.scoreDisplay.indexOf('W:') === 0 ? 'primary' : 'danger'
+  }
 
   gameClicked($event,game){
     let sourceGame = this.tourneyData.games.find(g => g.id === game.gameId);
     this.navCtrl.parent.parent.push(GamePage, sourceGame)
+  }
+  getScoreWorL(game){
+    return game.scoreDisplay ? game.scoreDisplay[0] : ''
+  }
+  toggleFollow(){
+    if(this.isFollowing){
+      let confirm = this.alertController.create({
+        title: 'Unfollow?',
+        message: 'Are you sure you want to unfollow',
+        buttons: [
+          {
+            text: 'Yes',
+            handler: () => {
+              this.isFollowing = false
+
+              let toast = this.toastController.create({
+                message: 'You have unfollowed this team',
+                duration: 5000,
+                position: 'bottom'
+              })
+              toast.present()
+            }
+          },
+          {text: 'No'}
+        ]
+      })
+      confirm.present()
+    }else{
+      this.isFollowing = true
+    }
   }
 
 }
