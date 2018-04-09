@@ -14,7 +14,7 @@
 
   <ion-content>
     <ion-card  *ngIf="!favourites">
-      <ion-card-header>No Followed Team</ion-card-header>
+      <ion-card-header class="my-team-header">No Followed Team</ion-card-header>
       <ion-card-content>
           <p>You are not currently following any team</p>
           <p>First select a tornamentt, then you can follow teams from their team page</p>
@@ -27,7 +27,7 @@
     
     <ion-card *ngIf="favourites">
         <ion-list>
-            <ion-list-header>Followed Teams</ion-list-header>
+            <ion-list-header class="my-team-header">Followed Teams</ion-list-header>
             <button ion-item *ngFor="let item of favourites" (click)="favouriteTapped($event, item)" >
               <ion-icon name="star"></ion-icon>
               {{item.team.name}}
