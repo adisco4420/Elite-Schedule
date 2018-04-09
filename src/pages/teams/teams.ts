@@ -5,6 +5,7 @@ import { TeamHomePage } from '../team-home/team-home';
 import { EliteApi } from '../../providers/elite-api/elite-api';
 import { Spinner } from 'ionic-angular/components/spinner/spinner';
 
+import * as _ from 'lodash'
 
 @Component({
   selector: 'page-teams',
@@ -13,6 +14,8 @@ import { Spinner } from 'ionic-angular/components/spinner/spinner';
 export class TeamsPage {
 
   public teams = []
+  private allTeams: any
+  private allTeamDivisions: any
 
   constructor(
     public navCtrl: NavController, 
@@ -29,7 +32,18 @@ export class TeamsPage {
     loader.present().then(()=>{
       let selectedTourney = this.navParams.data
       this.eliteApi.getTournamentData(selectedTourney.id).subscribe(data =>{
-        this.teams = data.teams
+        this.allTeams = data.teams;
+
+        this.allTeamDivisions =
+          _.chain(data.teams)
+            .groupBy('division')
+            .toPairs()
+            .map(item => _.zipObject(['divisionName', 'divisionTeam'], item))
+            .value()
+
+        this.teams = this.allTeamDivisions
+        console.log('division teams', this.teams);
+        
         loader.dismiss()
       })
     })

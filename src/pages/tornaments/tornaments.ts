@@ -36,7 +36,6 @@ export class TornamentsPage  {
         loader.dismiss()
       })
     })
-   
     console.log('onload'); 
   }
   itemTapped($event, tourney){
