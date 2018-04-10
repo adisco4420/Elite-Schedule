@@ -4,6 +4,7 @@ import { NavController, IonicPage, NavParams } from 'ionic-angular';
 import { EliteApi } from '../../providers/elite-api/elite-api';
 import { LoadingController } from 'ionic-angular/components/loading/loading-controller';
 import { TeamHomePage } from '../team-home/team-home';
+import { UserSettingsProvider } from '../../providers/user-settings/user-settings';
 
 @Component({
   selector: 'page-my-teams',
@@ -14,20 +15,11 @@ export class MyTeamsPage {
   constructor(
     public navCtrl: NavController,
     private eliteApi: EliteApi,
+    private userSettings: UserSettingsProvider,
     private loadingController: LoadingController
   ) {
   }
   favourites = [
-    {
-      team: {id: 6182, name: 'HC Elite 7th', coach:'Michelotti'},
-      tournamentId: '89e13aa2-ba6d-4f55-9cc2-61eba6172c63',
-      tournamentName: 'March Madness tournament'
-    },
-    {
-      team: {id: 805, name: 'HC Elite ', coach:'Michelotti'},
-      tournamentId: '98c6857e-b0d1-4295-b89e-2d95a45437f2',
-      tournamentName: 'Holiday Hoops Challenge'
-    }
     
   ]
   goToTornaments(){
@@ -43,6 +35,9 @@ export class MyTeamsPage {
       .subscribe(t => this.navCtrl.push(TeamHomePage, favorite.team))
     console.log('taped');
     
+  }
+  ionViewDidEnter(){
+    this.favourites = this.userSettings.getAllFavourite()
   }
 
 }
