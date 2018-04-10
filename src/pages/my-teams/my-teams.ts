@@ -19,9 +19,7 @@ export class MyTeamsPage {
     private loadingController: LoadingController
   ) {
   }
-  favourites = [
-    
-  ]
+  favourites = [];
   goToTornaments(){
     this.navCtrl.push(TornamentsPage)
   }
